@@ -63,7 +63,7 @@ const spinWheel = () => {
   if (spinning) return; // Prevent multiple spins
   spinning = true;
 
-  const spinDuration = 5000; // Spin duration in milliseconds
+  const spinDuration = 10000; // Spin duration in milliseconds
   const spinDeceleration = 0.005; // Deceleration rate
   let spinVelocity = Math.random() * 0.3 + 0.5; // Random initial velocity
 
@@ -77,12 +77,16 @@ const spinWheel = () => {
     if (spinVelocity > 0) {
       requestAnimationFrame(spin);
     } else {
-      // Determine winning segment
-      const segmentAngle = (2 * Math.PI) / segments.length;
-      const winningIndex = Math.floor(
-        ((2 * Math.PI - currentAngle + segmentAngle / 2) % (2 * Math.PI)) / segmentAngle
-      );
-      alert(`Winner: ${segments[winningIndex]}`);
+      // Calculate the winner
+      const numSegments = segments.length;
+      const segmentAngle = (2 * Math.PI) / numSegments; // Angle per segment
+
+      // Adjust angle to account for pointer being on the right
+      const adjustedAngle = (2 * Math.PI - currentAngle + (3 * Math.PI) / 2) % (2 * Math.PI);
+      const winningIndex = Math.floor(adjustedAngle / segmentAngle); // Find the segment index
+
+      const winningSegment = segments[winningIndex];
+      alert(`Winner: ${winningSegment}`);
       spinning = false;
     }
   };

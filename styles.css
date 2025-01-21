@@ -15,9 +15,9 @@ body {
 
 .pointer {
     position: absolute;
-    top: 0; /* Keeps the pointer at the top */
+    top: 25px; /* Keeps the pointer at the top */
     left: 50%; /* Centers the pointer */
-    transform: translateX(-50%) rotate(180deg); /* Flips the pointer upside down */
+    transform: translateX(-50%) rotate(0deg);
     width: 0;
     height: 0;
     border-left: 20px solid transparent;
@@ -27,7 +27,6 @@ body {
 }
 
 canvas {
-    border: 5px solid #333;
     border-radius: 50%;
 }
 
