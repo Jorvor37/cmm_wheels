@@ -1,0 +1,48 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+.wheel-container {
+    margin: 50px auto;
+    position: relative;
+    width: 500px;
+    height: 500px;
+}
+
+.pointer {
+    position: absolute;
+    top: 0; /* Keeps the pointer at the top */
+    left: 50%; /* Centers the pointer */
+    transform: translateX(-50%) rotate(180deg); /* Flips the pointer upside down */
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 40px solid #333; /* Downward-facing triangle */
+    z-index: 1;
+}
+
+canvas {
+    border: 5px solid #333;
+    border-radius: 50%;
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #45a049;
+}
