@@ -6,28 +6,33 @@ body {
     padding: 0;
 }
 
+ /* Wheel container centered and responsive */
 .wheel-container {
     margin: 50px auto;
     position: relative;
-    width: 500px;
-    height: 500px;
+    max-width: calc(100vw - 340px); /* Leave space for the list box (300px width + 20px margin) */
+    height: auto;
+    aspect-ratio: 1 / 1; /* Maintain a square shape */
+}
+
+/* Ensure canvas inside the wheel container is responsive */
+canvas {
+    width: 100%; /* Make the canvas fill the wheel container */
+    height: auto;
+    border-radius: 50%;
 }
 
 .pointer {
     position: absolute;
-    top: 25px; /* Keeps the pointer at the top */
-    left: 50%; /* Centers the pointer */
+    top: 0;
+    left: 50%;
     transform: translateX(-50%) rotate(0deg);
     width: 0;
     height: 0;
     border-left: 20px solid transparent;
     border-right: 20px solid transparent;
-    border-top: 40px solid #333; /* Downward-facing triangle */
+    border-top: 40px solid #333;
     z-index: 1;
-}
-
-canvas {
-    border-radius: 50%;
 }
 
 button {
@@ -44,4 +49,114 @@ button {
 
 button:hover {
     background-color: #45a049;
+}
+
+/* POP-UP */
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+    text-align: left;
+    width: 300px;
+}
+
+.popup input {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.popup button {
+    margin-top: 10px;
+}
+
+/* LIST */
+/* Right-side list container */
+.list-container {
+    position: fixed; /* Fixed position to stay on the screen */
+    top: 50px; /* Adjust based on your layout */
+    right: 20px; /* Position on the right side */
+    width: 300px; /* Set a fixed width for the container */
+    max-height: 80vh; /* Limit the height to 80% of the viewport */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    overflow-y: auto; /* Enable vertical scrolling when content overflows */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 100; /* Ensure it appears above other elements */
+    text-align: left;
+}
+
+.list-container ul {
+    list-style: none; /* Remove bullet points */
+    padding: 0;
+    margin: 0;
+}
+
+.list-container li {
+    display: flex; /* Flex layout for alignment */
+    justify-content: space-between; /* Align text and button */
+    align-items: center; /* Vertically center items */
+    padding: 5px 0; /* Space between items */
+    border-bottom: 1px solid #ddd; /* Separator between items */
+}
+
+.list-container li:last-child {
+    border-bottom: none; /* No border for the last item */
+}
+
+.list-container button {
+    background: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+.list-container button:hover {
+    background: darkred;
+}
+
+
+/* Flex container to align the wheel and the list */
+.flex-container {
+    display: flex;
+    align-items: flex-start; /* Align the wheel and list to the top */
+    justify-content: center; /* Center the wheel and list together */
+    gap: 20px; /* Add spacing between the wheel and list */
+    padding: 20px;
+    box-sizing: border-box;
+    flex-wrap: wrap; /* Allow wrapping for smaller screens */
+}
+
+/* List container adjustments for wrapping */
+.list-container {
+    position: relative; /* No need for fixed positioning */
+    max-height: 80vh; /* Limit height */
+    overflow-y: auto; /* Scrollable when needed */
+    min-width: 300px; /* Ensure consistent width */
+}
+
+@media (max-width: 768px) {
+    .flex-container {
+        flex-direction: column; /* Stack wheel and list vertically */
+        align-items: center; /* Center align */
+    }
+
+    .list-container {
+        width: 90%; /* Make the list fill most of the width */
+        max-width: 500px; /* Limit the maximum width */
+    }
 }

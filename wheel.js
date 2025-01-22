@@ -1,14 +1,15 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-const segments = ['Ali', 'Beatriz', 'Charles', 'Diya', 'Eric', 'Fatima', 'Gabriel', 'Hanna']; // Example names
+//Data Lists
+const segments = [ ];
 const textColors = { red: 'white', blue: 'white', green: 'black', yellow: 'black' };
 const orderedColors = ['red', 'blue', 'green', 'yellow']; // Fixed color order
 
-let currentAngle = 0; // Initial angle
+let currentAngle = 0;
 let spinning = false;
 
-// Function to draw a single segment
+// Draw single segment
 const drawSegment = (startAngle, endAngle, color, text) => {
   const centerX = canvas.width / 2;
   const centerY = canvas.height / 2;
@@ -35,7 +36,7 @@ const drawSegment = (startAngle, endAngle, color, text) => {
   ctx.restore();
 };
 
-// Function to draw the entire wheel
+// Draw the entire wheel
 const drawWheel = () => {
   const numSegments = segments.length;
   const anglePerSegment = (2 * Math.PI) / numSegments;
@@ -50,7 +51,7 @@ const drawWheel = () => {
     startAngle = endAngle;
   }
 
-  // Draw the center circle
+  // Center circle
   ctx.beginPath();
   ctx.arc(canvas.width / 2, canvas.height / 2, 30, 0, 2 * Math.PI);
   ctx.fillStyle = 'white';
@@ -58,34 +59,56 @@ const drawWheel = () => {
   ctx.stroke();
 };
 
-// Function to spin the wheel
+// Spin wheel function
 const spinWheel = () => {
   if (spinning) return; // Prevent multiple spins
   spinning = true;
 
-  const spinDuration = 10000; // Spin duration in milliseconds
-  const spinDeceleration = 0.005; // Deceleration rate
-  let spinVelocity = Math.random() * 0.3 + 0.5; // Random initial velocity
+  const spinDuration = 5000;
+  const totalSpins = Math.random() * 5 + 5; // Random number of spins (5-10 full rotations)
+  const startTime = performance.now(); // Timestamp
 
   const spin = () => {
-    spinVelocity -= spinDeceleration; // Decrease velocity
-    currentAngle += spinVelocity; // Update angle
-    currentAngle %= 2 * Math.PI; // Keep angle in [0, 2π]
+    const elapsedTime = performance.now() - startTime; // Time elapsed since the spin started
+    const progress = Math.min(elapsedTime / spinDuration, 1); // Progress between 0 and 1
+    const easeOutProgress = 1 - Math.pow(1 - progress, 3); // Ease-out effect
+
+    // Calculate the current angle based on progress
+    currentAngle = easeOutProgress * totalSpins * 2 * Math.PI; // Total rotation based on ease-out
 
     drawWheel();
 
-    if (spinVelocity > 0) {
-      requestAnimationFrame(spin);
+    if (progress < 1) {
+      requestAnimationFrame(spin); // Continue spinning
     } else {
       // Calculate the winner
       const numSegments = segments.length;
       const segmentAngle = (2 * Math.PI) / numSegments; // Angle per segment
 
-      // Adjust angle to account for pointer being on the right
-      const adjustedAngle = (2 * Math.PI - currentAngle + (3 * Math.PI) / 2) % (2 * Math.PI);
-      const winningIndex = Math.floor(adjustedAngle / segmentAngle); // Find the segment index
+      // Adjust angle for pointer at the top and ensure it's positive
+      let adjustedAngle = (2 * Math.PI - currentAngle + (3 * Math.PI) / 2) % (2 * Math.PI);
+      if (adjustedAngle < 0) {
+        adjustedAngle += 2 * Math.PI; // Ensure adjustedAngle is positive
+      }
 
+      // Calculate the winning index
+      const winningIndex = Math.floor(adjustedAngle / segmentAngle) % numSegments; // Ensure index is valid
       const winningSegment = segments[winningIndex];
+
+      // Remove the winning entry
+      segments.splice(winningIndex, 1);
+
+      // Redraw the wheel with the updated list
+      if (segments.length > 0) {
+          drawWheel();
+      } else {
+          alert("No more segments left! Add new entries.");
+      }
+      spinning = false;
+
+      console.log('Winning Index:', winningIndex); 
+      console.log('Winning Segment:', winningSegment);
+
       alert(`Winner: ${winningSegment}`);
       spinning = false;
     }
@@ -93,6 +116,87 @@ const spinWheel = () => {
 
   spin();
 };
+
+
+
+//Add player
+const popup = document.getElementById('popup');
+const addButton = document.getElementById('add');
+const saveButton = document.getElementById('save');
+const cancelButton = document.getElementById('cancel');
+
+addButton.addEventListener('click', () => {
+    popup.style.display = 'block'; // Show popup
+});
+
+cancelButton.addEventListener('click', () => {
+    popup.style.display = 'none'; // Hide popup
+});
+saveButton.addEventListener('click', () => {
+  const name = document.getElementById('name').value.trim();
+  const number = document.getElementById('number').value.trim();
+  const quantity = parseInt(document.getElementById('quantity').value, 10);
+
+  if (!name || !number || quantity <= 0) {
+      alert('Please fill out all fields with valid values.');
+      return;
+  }
+
+  for (let i = 0; i < quantity; i++) {
+      segments.push(`${name}(${number})`);
+  }
+
+  popup.style.display = 'none'; // Hide popup after saving
+  drawWheel(); // Redraw the wheel with new segments
+});
+
+
+//Edit List
+const listContainer = document.getElementById('list-container');
+const editButton = document.getElementById('edit');
+
+// Show the current list with delete buttons
+const showList = () => {
+  if (segments.length === 0) {
+      listContainer.innerHTML = "<p>No entries in the list. Add some!</p>";
+      return;
+  }
+
+  const listHTML = segments
+      .map((segment, index) => `
+          <li>
+              <span>${segment}</span>
+              <button onclick="removeEntry(${index})">Remove</button>
+          </li>
+      `)
+      .join('');
+
+  listContainer.innerHTML = `<ul>${listHTML}</ul>`;
+};
+
+const resizeCanvas = () => {
+  const wheelContainer = document.querySelector('.wheel-container');
+  const canvas = document.getElementById('canvas');
+  canvas.width = wheelContainer.offsetWidth;
+  canvas.height = wheelContainer.offsetWidth; // Maintain square aspect ratio
+};
+
+// Call resizeCanvas initially and on window resize
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+// Remove a specific entry
+const removeEntry = (index) => {
+    segments.splice(index, 1); // Remove the entry at the specified index
+    showList(); // Refresh the list display
+    drawWheel(); // Redraw the wheel
+};
+
+// Attach event listener for the "Edit" button
+editButton.addEventListener('click', () => {
+    showList(); // Display the list for editing
+    listContainer.style.display = 'block';
+});
 
 // Attach spin event listener
 document.getElementById('spin').addEventListener('click', spinWheel);
