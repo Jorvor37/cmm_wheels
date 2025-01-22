@@ -13,7 +13,7 @@ let spinning = false;
 const drawSegment = (startAngle, endAngle, color, text) => {
   const centerX = canvas.width / 2;
   const centerY = canvas.height / 2;
-  const radius = 200;
+  const radius = 230;
 
   // Draw the segment
   ctx.beginPath();
@@ -45,10 +45,10 @@ const drawWheel = () => {
 
   let startAngle = currentAngle;
   for (let i = 0; i < numSegments; i++) {
-    const endAngle = startAngle + anglePerSegment;
-    const color = orderedColors[i % orderedColors.length];
-    drawSegment(startAngle, endAngle, color, segments[i]);
-    startAngle = endAngle;
+      const endAngle = startAngle + anglePerSegment;
+      const color = orderedColors[i % orderedColors.length];
+      drawSegment(startAngle, endAngle, color, segments[i]);
+      startAngle = endAngle;
   }
 
   // Center circle
@@ -57,6 +57,39 @@ const drawWheel = () => {
   ctx.fillStyle = 'white';
   ctx.fill();
   ctx.stroke();
+
+  // Draw the center image
+  const centerImage = new Image();
+  centerImage.src = 'CMMLOGO.png'; // Replace with the actual image file name
+  centerImage.onload = () => {
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+
+      // Set maximum width and height for the image
+      const maxImageSize = 105; // Adjust this to fit the center properly
+      let imageWidth = centerImage.width;
+      let imageHeight = centerImage.height;
+
+      // Scale down the image to fit the maxImageSize
+      if (imageWidth > imageHeight) {
+          const scaleFactor = maxImageSize / imageWidth;
+          imageWidth = maxImageSize;
+          imageHeight = imageHeight * scaleFactor;
+      } else {
+          const scaleFactor = maxImageSize / imageHeight;
+          imageHeight = maxImageSize;
+          imageWidth = imageWidth * scaleFactor;
+      }
+
+      // Draw the image centered
+      ctx.drawImage(
+          centerImage,
+          centerX - imageWidth / 2, // Center horizontally
+          centerY - imageHeight / 2, // Center vertically
+          imageWidth,
+          imageHeight
+      );
+  };
 };
 
 // Spin wheel function
@@ -155,6 +188,13 @@ saveButton.addEventListener('click', () => {
 const listContainer = document.getElementById('list-container');
 const editButton = document.getElementById('edit');
 
+listContainer.addEventListener('click', (event) => {
+  if (event.target.tagName === 'BUTTON') {
+      const index = parseInt(event.target.dataset.index, 10);
+      removeEntry(index);
+  }
+});
+
 // Show the current list with delete buttons
 const showList = () => {
   if (segments.length === 0) {
@@ -162,14 +202,12 @@ const showList = () => {
       return;
   }
 
-  const listHTML = segments
-      .map((segment, index) => `
-          <li>
-              <span>${segment}</span>
-              <button onclick="removeEntry(${index})">Remove</button>
-          </li>
-      `)
-      .join('');
+  const listHTML = segments.map((segment, index) => `
+  <li>
+      <span>${segment}</span>
+      <button data-index="${index}">Remove</button>
+  </li>
+`).join('');
 
   listContainer.innerHTML = `<ul>${listHTML}</ul>`;
 };
@@ -194,8 +232,12 @@ const removeEntry = (index) => {
 
 // Attach event listener for the "Edit" button
 editButton.addEventListener('click', () => {
-    showList(); // Display the list for editing
-    listContainer.style.display = 'block';
+  if (listContainer.style.display === 'block') {
+      listContainer.style.display = 'none'; // Hide the list if already visible
+  } else {
+      showList(); // Display the list for editing
+      listContainer.style.display = 'block';
+  }
 });
 
 // Attach spin event listener
