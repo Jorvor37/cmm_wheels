@@ -5,6 +5,8 @@ let isRunning = false;
 let countdownDuration = 0;
 let remainingTime = 0;
 
+const alertSound = new Audio('alarmsound.mp3')
+
 function start() {
     if (!isRunning) {
         if (remainingTime === 0) {
@@ -38,6 +40,8 @@ function update() {
         clearInterval(timer);
         timeLeft = 0;
         isRunning = false;
+
+        alertSound.play();
     }
 
     let minutes = Math.floor((timeLeft / (1000 * 60)) % 60);
