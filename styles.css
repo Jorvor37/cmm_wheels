@@ -111,20 +111,19 @@ button + button { /* Add spacing between buttons when stacked vertically */
     transform: scale(1.05);
 }
 
-/* NAME CONTAINER */
 .list-container {
-    display: none;
     position: fixed;
-    top: 220px;
-    right: 20px;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
     width: 300px;
     max-height: 50vh;
-    padding: 15px;
-    border-radius: 10px;
-    background-color: var(--secondary-color);
-    color: var(--text-color);
     overflow-y: auto;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    background-color: var(--secondary-color);
+    border-radius: 10px;
+    z-index: 10;
 }
 
 .list-container ul {
@@ -159,30 +158,6 @@ button + button { /* Add spacing between buttons when stacked vertically */
 .list-container button:hover {
     background: var(--primary-color);
 }
-
-/* FLEX CONTAINER */
-.flex-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    padding: 20px;
-    box-sizing: border-box;
-    flex-wrap: wrap;
-}
-
-@media (max-width: 768px) {
-    .flex-container {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .list-container {
-        width: 90%;
-        max-width: 500px;
-    }
-}
-
-
 
 /* WINNER POP-UP */
 .winner-popup {

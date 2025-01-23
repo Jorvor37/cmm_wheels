@@ -1,0 +1,56 @@
+#countdown-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: var(--secondary-color);
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    height: auto;
+    height: 200px;
+}
+
+#countdown-section h1 {
+    color: var(--primary-color);
+    font-size: 2rem;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+#countdown-section #display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+    font-family: 'Fredoka One', sans-serif;
+    color: var(--text-color);
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    margin-bottom: 20px;
+    min-width: 200px;
+}
+
+#countdown-section #display > div {
+    margin: 0 10px;
+    text-align: center;
+}
+
+#countdown-section #control button {
+    font-size: 1rem;
+    font-family: 'Arial', sans-serif;
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+#countdown-section #control button:hover {
+    background-color: var(--accent-color);
+}

@@ -2,7 +2,7 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 //Data Lists
-const segments = [ ];
+let segments = [ ];
 const textColors = { red: 'white', blue: 'white', green: 'black', yellow: 'black' };
 const orderedColors = ['red', 'blue', 'green', 'yellow']; // Fixed color order
 
@@ -97,23 +97,33 @@ const winnerNameElement = document.getElementById('winner-name');
 const closeWinnerPopupButton = document.getElementById('close-winner-popup');
 
 // Show winner popup
-const showWinnerPopup = (winner) => {
+const showWinnerPopup = (winner, index) => {
     winnerNameElement.textContent = `🎊 ${winner} 🎊`;
     winnerPopup.style.display = 'block';
+
+    const closePopupHandler = () => {
+        winnerPopup.style.display = 'none';
+        removeEntry(index);
+        closeWinnerPopupButton.removeEventListener('click', closePopupHandler); // Remove the listener after execution
+    };
+
+    closeWinnerPopupButton.addEventListener('click', closePopupHandler);
 };
 
-// Close winner popup
-closeWinnerPopupButton.addEventListener('click', () => {
-    winnerPopup.style.display = 'none';
-});
+
 
 // Spin wheel function
 const spinWheel = () => {
   if (spinning) return;
   spinning = true;
 
+  for (let i = segments.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [segments[i], segments[j]] = [segments[j], segments[i]];
+    }
+
   const spinDuration = 5000;
-  const totalSpins = Math.random() * 5 + 5;
+  const totalSpins = Math.random()%10 * 5 + 5;
   const startTime = performance.now();
 
   const spin = () => {
@@ -121,7 +131,7 @@ const spinWheel = () => {
       const progress = Math.min(elapsedTime / spinDuration, 1);
       const easeOutProgress = 1 - Math.pow(1 - progress, 3);
 
-      currentAngle = easeOutProgress * totalSpins * 2 * Math.PI;
+      currentAngle = (easeOutProgress * totalSpins * 2 * Math.PI);
       drawWheel();
 
       if (progress < 1) {
@@ -134,8 +144,9 @@ const spinWheel = () => {
           const winningIndex = Math.floor(adjustedAngle / segmentAngle) % numSegments;
           const winningSegment = segments[winningIndex];
 
-          showWinnerPopup(winningSegment);
-          segments.splice(winningIndex, 1);
+          showWinnerPopup(winningSegment, winningIndex, 1);
+          //segments.splice(winningIndex, 1);
+          //removeEntry(winningSegment);
           if (segments.length > 0) drawWheel();
           else alert("No more segments left! Add new entries.");
           spinning = false;
