@@ -1,0 +1,33 @@
+/* Wheel container centered and responsive */
+.wheel-container {
+    margin: 80px auto;
+    position: relative;
+    right: 150px;
+    max-width: calc(100vw - 360px); /* Leave space for the list box */
+    height: auto;
+    aspect-ratio: 1 / 1; /* Maintain a square shape */
+    background: radial-gradient(circle, var(--secondary-color), var(--primary-color));
+    border-radius: 50%;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Canvas inside the wheel */
+canvas {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+}
+
+.pointer {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 40px solid #000000;
+    opacity: 70%;
+    z-index: 1;
+}

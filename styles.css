@@ -1,11 +1,12 @@
 :root {
-    --primary-color: #f9c74f; /* Derived from the yellow in the image */
-    --secondary-color: #ffff; /* Derived from the purple in the image */
-    --accent-color: #f94144; /* Derived from the red details */
-    --text-color: #000; /* White text for contrast */
-    --background-color: #b367d8; /* Light background for modern look */
+    --primary-color: #f9c74f;
+    --secondary-color: #ffff;
+    --accent-color: #f94144;
+    --text-color: #000;
+    --background-color: #b367d8;
 }
 
+/* MAIN */
 body {
     font-family: 'Arial', sans-serif;
     text-align: center;
@@ -17,20 +18,21 @@ body {
 
 h1 {
     padding-top: 60px;
-    font-family: 'Fredoka One', sans-serif; /* Use a fun, bold font */
-    font-size: 3rem; /* Large and eye-catching */
-    color: var(--primary-color); /* Use the primary yellow color for text */
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3), 0 0 15px var(--accent-color); /* Softer shadow with an accent glow */
-    text-transform: uppercase; /* Make it all caps for emphasis */
-    letter-spacing: 1.5px; /* Slight spacing for better readability */
+    font-family: 'Fredoka One', sans-serif;
+    font-size: 3rem;
+    color: var(--primary-color);
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3), 0 0 15px var(--accent-color);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+
     background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    background-clip: text;
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent; /* Apply gradient to text */
-    margin-bottom: 20px; /* Add spacing below */
-    animation: text-glow 2s infinite alternate; /* Add a soft glow animation */
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 20px;
+    animation: text-glow 2s infinite alternate;
 }
 
-/* Glow effect animation */
 @keyframes text-glow {
     0% {
         text-shadow: 0 0 5px var(--primary-color), 0 0 10px var(--accent-color), 0 0 20px var(--accent-color);
@@ -40,44 +42,9 @@ h1 {
     }
 }
 
-
-/* Wheel container centered and responsive */
-.wheel-container {
-    margin: 80px auto;
-    position: relative;
-    right: 150px;
-    max-width: calc(100vw - 360px); /* Leave space for the list box */
-    height: auto;
-    aspect-ratio: 1 / 1; /* Maintain a square shape */
-    background: radial-gradient(circle, var(--secondary-color), var(--primary-color));
-    border-radius: 50%;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-}
-
-/* Canvas inside the wheel */
-canvas {
-    width: 100%;
-    height: auto;
-    border-radius: 50%;
-}
-
-.pointer {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    border-left: 20px solid transparent;
-    border-right: 20px solid transparent;
-    border-top: 40px solid #000000;
-    opacity: 70%;
-    z-index: 1;
-}
-
-/* Buttons */
+/* BUTTONS */
 button {
-    margin: 20px 10px; /* Adds vertical and horizontal spacing */
+    margin: 20px 10px;
     padding: 12px 24px;
     font-size: 16px;
     cursor: pointer;
@@ -87,7 +54,7 @@ button {
     border-radius: 25px;
     transition: transform 0.2s, background-color 0.3s;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    display: inline-block; /* Ensure buttons line up horizontally if needed */
+    display: inline-block;
 }
 
 button:hover {
@@ -96,17 +63,18 @@ button:hover {
     transform: scale(1.05);
 }
 
-/* Add spacing between buttons when stacked vertically */
-button + button {
-    margin-top: 10px; /* Space between adjacent buttons */
+
+button + button { /* Add spacing between buttons when stacked vertically */
+    margin-top: 10px;
 }
 
-/* Popup */
+/* POP-UP */
 .popup {
     display: none;
     position: fixed;
     top: 50%;
     left: 50%;
+    
     transform: translate(-50%, -50%);
     background: var(--secondary-color);
     padding: 30px;
@@ -123,10 +91,10 @@ button + button {
     padding: 10px;
     border: 2px solid var(--primary-color);
     border-radius: 8px;
-    font-size: 14px;
     color: var(--text-color);
     background: var(--secondary-color);
     box-sizing: border-box;
+    font-size: 14px;
 }
 
 .popup button {
@@ -143,7 +111,7 @@ button + button {
     transform: scale(1.05);
 }
 
-/* List Container */
+/* NAME CONTAINER */
 .list-container {
     display: none;
     position: fixed;
@@ -192,7 +160,7 @@ button + button {
     background: var(--primary-color);
 }
 
-/* Flex Container */
+/* FLEX CONTAINER */
 .flex-container {
     display: flex;
     justify-content: center;
@@ -211,5 +179,63 @@ button + button {
     .list-container {
         width: 90%;
         max-width: 500px;
+    }
+}
+
+
+
+/* WINNER POP-UP */
+.winner-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #000;
+    color: var(--text-color);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    z-index: 20;
+    text-align: center;
+    opacity: 80%;
+    width: 50vh;
+}
+
+.winner-popup h2 {
+    font-size: 2.5rem;
+    color: #ffff;
+    margin-bottom: 20px;
+    animation: pop-scale 0.5s ease-out;
+}
+
+.winner-popup p {
+    font-size: 1.5rem;
+    color: #ffff;
+    margin-bottom: 30px;
+    animation: text-glow 2s infinite alternate;
+}
+
+.winner-popup button {
+    background-color: var(--accent-color);
+    color: var(--text-color);
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.3s;
+    font-size: 1rem;
+}
+
+.winner-popup button:hover {
+    background-color: var(--secondary-color);
+    transform: scale(1.1);
+}
+
+@keyframes pop-scale {
+    0% {
+        transform: scale(0.8);
+    }
+    100% {
+        transform: scale(1);
     }
 }

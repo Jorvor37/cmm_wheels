@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dynamic Wheel</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="wheelstyles.css">
 </head>
 
 <body>
@@ -34,6 +35,15 @@
 
         <button id="save">Save</button>
         <button id="cancel">Cancel</button>
+    </div>
+
+        <!-- Winner Popup -->
+    <div class="winner-popup" id="winner-popup">
+        <div class="winner-content">
+            <h2>🎉 WINNER! 🎉</h2>
+            <p id="winner-name"></p>
+            <button id="close-winner-popup">Close</button>
+        </div>
     </div>
 
     <script src="wheel.js"></script>

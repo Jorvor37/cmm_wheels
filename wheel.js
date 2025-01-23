@@ -92,59 +92,54 @@ const drawWheel = () => {
   };
 };
 
+const winnerPopup = document.getElementById('winner-popup');
+const winnerNameElement = document.getElementById('winner-name');
+const closeWinnerPopupButton = document.getElementById('close-winner-popup');
+
+// Show winner popup
+const showWinnerPopup = (winner) => {
+    winnerNameElement.textContent = `🎊 ${winner} 🎊`;
+    winnerPopup.style.display = 'block';
+};
+
+// Close winner popup
+closeWinnerPopupButton.addEventListener('click', () => {
+    winnerPopup.style.display = 'none';
+});
+
 // Spin wheel function
 const spinWheel = () => {
-  if (spinning) return; // Prevent multiple spins
+  if (spinning) return;
   spinning = true;
 
   const spinDuration = 5000;
-  const totalSpins = Math.random() * 5 + 5; // Random number of spins (5-10 full rotations)
-  const startTime = performance.now(); // Timestamp
+  const totalSpins = Math.random() * 5 + 5;
+  const startTime = performance.now();
 
   const spin = () => {
-    const elapsedTime = performance.now() - startTime; // Time elapsed since the spin started
-    const progress = Math.min(elapsedTime / spinDuration, 1); // Progress between 0 and 1
-    const easeOutProgress = 1 - Math.pow(1 - progress, 3); // Ease-out effect
+      const elapsedTime = performance.now() - startTime;
+      const progress = Math.min(elapsedTime / spinDuration, 1);
+      const easeOutProgress = 1 - Math.pow(1 - progress, 3);
 
-    // Calculate the current angle based on progress
-    currentAngle = easeOutProgress * totalSpins * 2 * Math.PI; // Total rotation based on ease-out
+      currentAngle = easeOutProgress * totalSpins * 2 * Math.PI;
+      drawWheel();
 
-    drawWheel();
-
-    if (progress < 1) {
-      requestAnimationFrame(spin); // Continue spinning
-    } else {
-      // Calculate the winner
-      const numSegments = segments.length;
-      const segmentAngle = (2 * Math.PI) / numSegments; // Angle per segment
-
-      // Adjust angle for pointer at the top and ensure it's positive
-      let adjustedAngle = (2 * Math.PI - currentAngle + (3 * Math.PI) / 2) % (2 * Math.PI);
-      if (adjustedAngle < 0) {
-        adjustedAngle += 2 * Math.PI; // Ensure adjustedAngle is positive
-      }
-
-      // Calculate the winning index
-      const winningIndex = Math.floor(adjustedAngle / segmentAngle) % numSegments; // Ensure index is valid
-      const winningSegment = segments[winningIndex];
-
-      // Remove the winning entry
-      segments.splice(winningIndex, 1);
-
-      // Redraw the wheel with the updated list
-      if (segments.length > 0) {
-          drawWheel();
+      if (progress < 1) {
+          requestAnimationFrame(spin);
       } else {
-          alert("No more segments left! Add new entries.");
+          const numSegments = segments.length;
+          const segmentAngle = (2 * Math.PI) / numSegments;
+          let adjustedAngle = (2 * Math.PI - currentAngle + (3 * Math.PI) / 2) % (2 * Math.PI);
+          if (adjustedAngle < 0) adjustedAngle += 2 * Math.PI;
+          const winningIndex = Math.floor(adjustedAngle / segmentAngle) % numSegments;
+          const winningSegment = segments[winningIndex];
+
+          showWinnerPopup(winningSegment);
+          segments.splice(winningIndex, 1);
+          if (segments.length > 0) drawWheel();
+          else alert("No more segments left! Add new entries.");
+          spinning = false;
       }
-      spinning = false;
-
-      console.log('Winning Index:', winningIndex); 
-      console.log('Winning Segment:', winningSegment);
-
-      alert(`Winner: ${winningSegment}`);
-      spinning = false;
-    }
   };
 
   spin();
@@ -216,10 +211,9 @@ const resizeCanvas = () => {
   const wheelContainer = document.querySelector('.wheel-container');
   const canvas = document.getElementById('canvas');
   canvas.width = wheelContainer.offsetWidth;
-  canvas.height = wheelContainer.offsetWidth; // Maintain square aspect ratio
+  canvas.height = wheelContainer.offsetWidth;
 };
 
-// Call resizeCanvas initially and on window resize
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
