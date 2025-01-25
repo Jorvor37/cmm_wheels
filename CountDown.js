@@ -56,27 +56,27 @@ function update() {
 }
 
 function reset() {
-    clearInterval(timer);
-    isRunning = false;
-    remainingTime = 0;
-    countdownDuration = 0;
-    display.textContent = "00:00:00";
+    // clearInterval(timer);
+    // isRunning = false;
+    // remainingTime = 0;
+    // countdownDuration = 0;
+    // display.textContent = "00:00:00";
 
-    // Reset the input fields to allow new values
-    const min = document.getElementById('min');
-    const sec = document.getElementById('sec');
-    const mil = document.getElementById('mil');
+    // // Reset the input fields to allow new values
+    // const min = document.getElementById('min');
+    // const sec = document.getElementById('sec');
+    // const mil = document.getElementById('mil');
 
-    min.textContent = "00";
-    sec.textContent = "00";
-    mil.textContent = "00";
+    // min.textContent = "00";
+    // sec.textContent = "00";
+    // mil.textContent = "00";
 
-    // Make sure the fields are editable again
-    min.setAttribute('contenteditable', 'true');
-    sec.setAttribute('contenteditable', 'true');
-    mil.setAttribute('contenteditable', 'true');
+    // // Make sure the fields are editable again
+    // min.setAttribute('contenteditable', 'true');
+    // sec.setAttribute('contenteditable', 'true');
+    // mil.setAttribute('contenteditable', 'true');
 
-    //location.reload();  // Reloads the current page
+    location.reload();  // Reloads the current page
 }
 
 function validateInput(element, max) {

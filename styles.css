@@ -111,7 +111,9 @@ button + button { /* Add spacing between buttons when stacked vertically */
     transform: scale(1.05);
 }
 
+/* NAME LIST */
 .list-container {
+    background: var(--background-color);
     position: fixed;
     top: 50%;
     left: 10px;

@@ -54,3 +54,17 @@
 #countdown-section #control button:hover {
     background-color: var(--accent-color);
 }
+
+#countdown-section #display span {
+    display: inline-block;
+    text-align: center;
+    font-size: 3rem;
+    font-family: 'Fredoka One', sans-serif;
+    color: var(--text-color);
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    margin: 0 5px; /* Adjust spacing between fields */
+    min-width: 50px; /* Ensure consistent size */
+}
